@@ -1,117 +1,139 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { assets } from "../assets/frontend_assets/assets";
 
 const Navbar = () => {
-  const [Visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const navLinks = [
+    { name: "HOME", to: "/" },
+    { name: "COLLECTION", to: "/collection" },
+    { name: "ABOUT", to: "/about" },
+    { name: "CONTACT", to: "/contact" },
+  ];
+
   return (
-    <div className="flex items-center justify-between py-5 font-medium">
-      <h1 className="text-4xl font-extrabold text-indigo-600 tracking-wide uppercase">
-        SelfCart
-      </h1>
-      <ul className="hidden sm:flex gap-5 text-sm text-gray-900">
-        <NavLink to="/" className="flex flex-col items-center gap-1">
-          <p>HOME</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
+    <header className="fixed w-full bg-white shadow-md z-50">
+      <div className="container mx-auto flex items-center justify-between py-4 px-5 sm:px-10 relative">
+        {/* Brand Logo */}
+        <NavLink to="/">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-indigo-600 tracking-wide uppercase cursor-pointer transition-transform hover:scale-105">
+            SelfCart
+          </h1>
         </NavLink>
 
-        <NavLink to="/collection" className="flex flex-col items-center gap-1">
-          <p>COLLECTION</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
+        {/* Desktop Menu */}
+        <ul className="hidden sm:flex items-center gap-10 text-[15px] font-semibold">
+          {navLinks.map((link) => (
+            <li key={link.to} className="group relative">
+              <NavLink
+                to={link.to}
+                className={({ isActive }) =>
+                  `transition-colors ${
+                    isActive ? "text-indigo-600" : "text-gray-700"
+                  } hover:text-indigo-600`
+                }
+              >
+                {link.name}
+              </NavLink>
+              <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-indigo-600 group-hover:w-full transition-all duration-300"></span>
+            </li>
+          ))}
+        </ul>
 
-        <NavLink to="/about" className="flex flex-col items-center gap-1">
-          <p>ABOUT</p>
-          <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
-
-        <NavLink to="/contact" className="flex flex-col items-center gap-1">
-          <p>CONTACT</p>
-          <hr className="w-3/4 border-none h-[1.5px] bg-gray-700 hidden" />
-        </NavLink>
-      </ul>
-
-      <div className="flex items-center gap-6">
-        <img src={assets.search_icon} alt="" />
-
-        <div className="group relative">
+        {/* Icons */}
+        <div className="flex items-center gap-6">
+          {/* Search */}
           <img
-            src={assets.profile_icon}
-            alt=""
-            className="w-5 cursor-pointer"
+            src={assets.search_icon}
+            alt="Search"
+            className="w-5 cursor-pointer hover:scale-110 transition-transform"
           />
-          <div className="group-hover:block hidden absolute dropdown-men right-0 pt-4">
-            <p className="cursor-pointer hover:text-black">My Profile</p>
-            <p className="cursor-pointer hover:text-black">Orders</p>
-            <p className="cursor-pointer hover:text-black">Logout</p>
+
+          {/* Profile Dropdown */}
+          <div className="relative group">
+            <img
+              src={assets.profile_icon}
+              alt="Profile"
+              className="w-6 h-6 cursor-pointer hover:scale-110 transition-transform"
+            />
+
+            <div
+              className="absolute right-0 mt-3 w-36 bg-white shadow-lg rounded-md opacity-0 scale-95 pointer-events-none 
+              group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all duration-300 p-3 space-y-2"
+            >
+              <p className="cursor-pointer hover:text-indigo-600 transition-colors">
+                My Profile
+              </p>
+              <p className="cursor-pointer hover:text-indigo-600 transition-colors">
+                Orders
+              </p>
+              <p className="cursor-pointer hover:text-indigo-600 transition-colors">
+                Logout
+              </p>
+            </div>
           </div>
+
+          {/* Cart Icon */}
+          <Link to="/cart" className="relative">
+            <img
+              src={assets.cart_icon}
+              alt="Cart"
+              className="w-6 cursor-pointer hover:scale-110 transition-transform"
+            />
+            <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white text-[10px] flex items-center justify-center rounded-full animate-pulse">
+              10
+            </span>
+          </Link>
+
+          {/* Mobile Menu Button */}
+          <img
+            src={assets.menu_icon}
+            onClick={() => setVisible(true)}
+            alt="Menu"
+            className="w-6 cursor-pointer sm:hidden hover:scale-110 transition-transform"
+          />
         </div>
 
-        <Link to="/cart" className="relative">
-          <img src={assets.cart_icon} className="w-5 min-w-5" alt="" />
-          <p className="absolute right-[-5px] bottom-[-5px] w-4 text-center leading-3 bg-black text-white rounded-xs ">
-            10
-          </p>
-        </Link>
-        <img
-          onClick={() => setVisible(true)}
-          src={assets.menu_icon}
-          alt=""
-          className="w-5 cursor-pointer sm:hidden"
-        />
-
-        {/* Side Bar menu for the smaller screen */}
-
+        {/* Mobile Sidebar */}
         <div
-          className={`absolute top-0 right-0 transition-all bg-white bottom-0 overflow-hidden z-50 ${
-            Visible ? "w-2/3 sm:w-1/3 p-6" : "w-0 p-0"
+          className={`fixed top-0 right-0 h-full bg-white shadow-lg z-[100] transition-all duration-500 sm:hidden ${
+            visible ? "w-3/4 p-6" : "w-0 p-0"
           }`}
         >
-          <div className="flex flex-col text-gray-600">
-            <div
-              onClick={() => setVisible(false)}
-              className="flex items-center gap-4 p-3 cursor-pointer"
-            >
-              <img
-                src={assets.dropdown_icon}
-                alt=""
-                className="h-4 rotate-180"
-              />
-              <p>Back</p>
+          {visible && (
+            <div className="flex flex-col h-full animate-fadeIn">
+              {/* Close Button */}
+              <button
+                onClick={() => setVisible(false)}
+                className="flex items-center gap-3 p-3 mb-4 hover:text-indigo-600 transition-colors"
+              >
+                <img
+                  src={assets.dropdown_icon}
+                  alt="Back"
+                  className="h-4 rotate-180"
+                />
+                <p className="font-medium text-[15px]">Back</p>
+              </button>
+
+              {/* Links */}
+              <nav className="flex flex-col gap-4">
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setVisible(false)}
+                    className="p-3 border rounded-md text-gray-700 hover:text-indigo-600 hover:bg-indigo-50 transition-all"
+                  >
+                    {link.name}
+                  </NavLink>
+                ))}
+              </nav>
             </div>
-            <NavLink
-            onClick={() => setVisible(false)}
-              to="/"
-              className="flex flex-col items-center gap-1 p-3 border"
-            >
-              HOME
-            </NavLink>
-            <NavLink
-              onClick={() => setVisible(false)}
-              to="/collection"
-              className="flex flex-col items-center gap-1 p-3 border"
-            >
-              COLLECTION
-            </NavLink>
-            <NavLink
-              onClick={() => setVisible(false)}
-              to="/about"
-              className="flex flex-col items-center gap-1 p-3 border"
-            >
-              ABOUT
-            </NavLink>
-            <NavLink
-              onClick={() => setVisible(false)}
-              to="/contact"
-              className="flex flex-col items-center gap-1 p-3 border"
-            >
-              CONTACT
-            </NavLink>
-          </div>
+          )}
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
