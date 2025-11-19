@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState ,useContext} from "react";
 import { NavLink, Link } from "react-router-dom";
 import { assets } from "../assets/frontend_assets/assets";
+import { ShopContext } from "../context/ShopContext";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
+  
+  const {search, setSearch, ShowSearch, setShowSearch,   getCartCount} = useContext(ShopContext)
 
   const navLinks = [
     { name: "HOME", to: "/" },
@@ -13,8 +16,8 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="fixed w-full bg-white shadow-md z-50">
-      <div className="container mx-auto flex items-center justify-between py-4 px-5 sm:px-10 relative">
+    <header className="fixed w-[80%] bg-white shadow-md z-50 rounded-2xl  ">
+      <div className="container mx-auto flex items-center justify-between py-4 px-5 sm:px-10 relative ">
         {/* Brand Logo */}
         <NavLink to="/">
           <h1 className="text-3xl sm:text-4xl font-extrabold text-indigo-600 tracking-wide uppercase cursor-pointer transition-transform hover:scale-105">
@@ -45,6 +48,7 @@ const Navbar = () => {
         <div className="flex items-center gap-6">
           {/* Search */}
           <img
+          onClick={()=>setShowSearch(true)}
             src={assets.search_icon}
             alt="Search"
             className="w-5 cursor-pointer hover:scale-110 transition-transform"
@@ -82,7 +86,7 @@ const Navbar = () => {
               className="w-6 cursor-pointer hover:scale-110 transition-transform"
             />
             <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white text-[10px] flex items-center justify-center rounded-full animate-pulse">
-              10
+              {getCartCount() }
             </span>
           </Link>
 
