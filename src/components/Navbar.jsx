@@ -1,12 +1,19 @@
-import React, { useState ,useContext} from "react";
+import React, { useState, useContext } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { assets } from "../assets/frontend_assets/assets";
 import { ShopContext } from "../context/ShopContext";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
-  
-  const {search, setSearch, ShowSearch, setShowSearch,   getCartCount} = useContext(ShopContext)
+
+  const {
+    search,
+    setSearch,
+    ShowSearch,
+    setShowSearch,
+    getCartCount,
+    navigate,
+  } = useContext(ShopContext);
 
   const navLinks = [
     { name: "HOME", to: "/" },
@@ -48,7 +55,7 @@ const Navbar = () => {
         <div className="flex items-center gap-6">
           {/* Search */}
           <img
-          onClick={()=>setShowSearch(true)}
+            onClick={() => setShowSearch(true)}
             src={assets.search_icon}
             alt="Search"
             className="w-5 cursor-pointer hover:scale-110 transition-transform"
@@ -56,11 +63,13 @@ const Navbar = () => {
 
           {/* Profile Dropdown */}
           <div className="relative group">
-            <img
-              src={assets.profile_icon}
-              alt="Profile"
-              className="w-6 h-6 cursor-pointer hover:scale-110 transition-transform"
-            />
+            <Link to="/login">
+              <img
+                src={assets.profile_icon}
+                alt="Profile"
+                className="w-6 h-6 cursor-pointer hover:scale-110 transition-transform"
+              />
+            </Link>
 
             <div
               className="absolute right-0 mt-3 w-36 bg-white shadow-lg rounded-md opacity-0 scale-95 pointer-events-none 
@@ -86,7 +95,7 @@ const Navbar = () => {
               className="w-6 cursor-pointer hover:scale-110 transition-transform"
             />
             <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-600 text-white text-[10px] flex items-center justify-center rounded-full animate-pulse">
-              {getCartCount() }
+              {getCartCount()}
             </span>
           </Link>
 

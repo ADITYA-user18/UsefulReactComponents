@@ -15,6 +15,10 @@ a.active hr {
   font-family: "Prata", sans-serif;
 }
 
+::-webkit-scrollbar{
+  display: none;
+}
+
 
 @media (max-width:640px){
   a.active {
